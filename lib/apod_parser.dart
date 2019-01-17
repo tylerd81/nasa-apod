@@ -11,6 +11,7 @@ class NasaApod {
   String url;
   String apiUrl;
   String apiOnDate;
+  bool loading = true;
 
   NasaApod(this.apiUrl);
 
@@ -18,8 +19,24 @@ class NasaApod {
     _apodJsonParse(jsonData);
   }
 
-  void onDate(String apiDate) {
-    this.apiOnDate = apiDate;
+  void onDate(DateTime dt) {
+    String month;
+    String day;
+
+    if (dt.month < 10) {
+      month = "0${dt.month}";
+    } else {
+      month = dt.month.toString();
+    }
+
+    if (dt.day < 10) {
+      day = "0${dt.day}";
+    } else {
+      day = dt.day.toString();
+    }
+
+    print("${dt.year}-$month-$day");
+    apiOnDate = "${dt.year}-$month-$day";
   }
 
   Future<void> load() async {
@@ -39,5 +56,6 @@ class NasaApod {
     title = jsonObj["title"];
     explanation = jsonObj["explanation"];
     url = jsonObj["url"];
+    loading = false;
   }
 }
